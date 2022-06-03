@@ -11,4 +11,24 @@ describe('Value Objects test unit', () => {
     vo = new StubValueObject({prop1: 'value1'})
     expect(vo.value).toStrictEqual({prop1: 'value1'})
   });
+
+  it('should  covert to a string', () => {
+    const date = new Date
+    const data = [
+      {received: null, expected: "null"},
+      {received: undefined, expected: "undefined"},
+      {received: "", expected: ""},
+      {received: 1, expected: "1"},
+      {received: "string", expected: "string"},
+      {received: true, expected: "true"},
+      {received: date, expected: date.toString()},
+      {received: {prop1: 'value'}, expected: JSON.stringify({prop1: 'value'})},
+    ]
+
+    data.forEach(item => {
+      const vo = new StubValueObject(item.received)
+      expect(vo + "").toBe(item.expected)
+    })
+ 
+  });
 });
