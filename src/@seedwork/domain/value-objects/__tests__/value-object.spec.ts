@@ -1,6 +1,5 @@
-//Para class abstratas precisaremos gerar um STUB
-
 import ValueObject from "../value-object";
+//Para class abstratas precisaremos gerar um STUB
 
 class StubValueObject extends ValueObject{}
 describe('Value Objects test unit', () => {
@@ -15,8 +14,6 @@ describe('Value Objects test unit', () => {
   it('should  covert to a string', () => {
     const date = new Date
     const data = [
-      {received: null, expected: "null"},
-      {received: undefined, expected: "undefined"},
       {received: "", expected: ""},
       {received: 1, expected: "1"},
       {received: "string", expected: "string"},
@@ -31,4 +28,10 @@ describe('Value Objects test unit', () => {
     })
  
   });
+
+  it('immutable', () => {
+    const vo = new StubValueObject({prop1: 'value1'})
+   
+    console.log(vo)
+  })
 });
