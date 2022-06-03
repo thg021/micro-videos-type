@@ -55,7 +55,7 @@ describe('Category Test', () => {
       {props: {name: 'Movie'}},
       {props: {name: 'Movie'}, id: null},
       {props: {name: 'Movie'}, id: undefined},
-      {props: {name: 'Movie'}, id: new UniqueEntityId()},
+      {props: {name: 'Movie'}, id: new UniqueEntityId('291f3061-0549-4135-b79d-63017215fdab')},
     ]
 
     data.forEach(item => {
