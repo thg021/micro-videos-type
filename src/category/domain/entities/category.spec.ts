@@ -1,4 +1,4 @@
-import UniqueEntityId from "../../../@seedwork/domain/unique-entity-id.vo"
+import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo"
 import { Category } from './category';
 import { omit } from 'lodash'
 describe('Category Test', () => {
@@ -61,13 +61,17 @@ describe('Category Test', () => {
     data.forEach(item => {
       const category = new Category(item.props, item?.id)
       expect(category.id).not.toBeNull()
-      expect(category.id).toBeInstanceOf(UniqueEntityId)
+      expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId)
     })
 
   });
-  test('getter of name field', () => {
+
+  test('getter and setter of name field', () => {
     const category = new Category({name: 'Movie'})
     expect(category.name).toBe('Movie')
+
+    category['name'] = 'other name'
+    expect(category.name).toBe('other name')
   });
 
   test('getter and setter of description field', () => {
@@ -98,5 +102,22 @@ describe('Category Test', () => {
     expect(category.created_at).toBe(created_at)
     expect(category.created_at).toBeInstanceOf(Date)
   });
+
+  test('update properties', () => {
+    let category = new Category({name: 'Movie'})
+    category.update('Cartoon', 'description')
+    expect(category.name).toBe('Cartoon')
+    expect(category.description).toBe('description')
+  });
+
+  test('activated category', () => {
+    let category = new Category({name: 'Movie'})
+    expect(category.is_active).toBeTruthy()
+    category.desactivate()
+    expect(category.is_active).toBeFalsy()
+    category.activate()
+    expect(category.is_active).toBeTruthy()
+  })
+  
 });
 
