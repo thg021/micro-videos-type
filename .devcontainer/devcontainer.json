@@ -27,8 +27,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"firsttris.vscode-jest-runner", 
-		"vivaxy.vscode-conventional-commits"
+		"firsttris.vscode-jest-runner",
+		"vivaxy.vscode-conventional-commits",
+		"mblode.pretty-formatter",
+		"esbenp.prettier-vscode"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
