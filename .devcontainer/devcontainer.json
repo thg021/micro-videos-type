@@ -30,7 +30,9 @@
 		"firsttris.vscode-jest-runner",
 		"vivaxy.vscode-conventional-commits",
 		"mblode.pretty-formatter",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"donjayamanne.githistory",
+		"mhutchie.git-graph"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
