@@ -22,7 +22,6 @@ export default class ValidatorRules {
 
   maxLength(max: number): Omit<this, 'maxLength'> {
     if (!isEmpty(this.value) && this.value.length > max) {
-      console.log('max class', max)
       throw new ValidatorError(
         `The ${this.property} must be less or equal than ${max} characters!`,
       )
