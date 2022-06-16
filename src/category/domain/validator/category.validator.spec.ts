@@ -58,7 +58,7 @@ describe('CategoryValidator tests', () => {
     arrange.forEach((item) => {
       const isValid = validator.validate(item)
       expect(isValid).toBeTruthy()
-      expect(validator.validateDate).toStrictEqual(new CategoryRules(item))
+      expect(validator.validatedData).toStrictEqual(new CategoryRules(item))
     })
   })
 })
