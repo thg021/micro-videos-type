@@ -1,46 +1,48 @@
-import ValidatorError from '../../../../@seedwork/domain/errors/validator-error'
 import { Category } from '../category'
 
 describe('Category Integration Tests', () => {
   describe('create method', () => {
     it('should a invalid category when create using property name', () => {
-      expect(() => new Category({ name: null })).toThrow(
-        new ValidatorError('The name is required!'),
-      )
+      expect(() => new Category({ name: null })).containsErrorMessages({
+        name: [
+          'name should not be empty',
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
 
-      expect(() => new Category({ name: '' })).toThrow(
-        new ValidatorError('The name is required!'),
-      )
+      expect(() => new Category({ name: '' })).containsErrorMessages({
+        name: ['name should not be empty'],
+      })
 
-      expect(() => new Category({ name: 5 as any })).toThrow(
-        new ValidatorError('The name must be a string!'),
-      )
+      expect(() => new Category({ name: 5 as any })).containsErrorMessages({
+        name: [
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
 
-      expect(() => new Category({ name: 't'.repeat(256) })).toThrow(
-        new ValidatorError(
-          'The name must be less or equal than 255 characters!',
-        ),
-      )
+      expect(
+        () => new Category({ name: 't'.repeat(256) }),
+      ).containsErrorMessages({
+        name: ['name must be shorter than or equal to 255 characters'],
+      })
     })
 
     it('should a invalid category when create using property description', () => {
       expect(
         () => new Category({ name: 'test', description: 1 as any }),
-      ).toThrow(new ValidatorError('The description must be a string!'))
-
-      expect(
-        () => new Category({ name: 'test', description: true as any }),
-      ).toThrow(new ValidatorError('The description must be a string!'))
+      ).containsErrorMessages({
+        description: ['description must be a string'],
+      })
     })
 
     it('should a invalid category when create using property is_active', () => {
-      expect(() => new Category({ name: 'test', is_active: 1 as any })).toThrow(
-        new ValidatorError('The is_active must be a boolean!'),
-      )
-
       expect(
-        () => new Category({ name: 'test', is_active: 'true' as any }),
-      ).toThrow(new ValidatorError('The is_active must be a boolean!'))
+        () => new Category({ name: 'test', is_active: 1 as any }),
+      ).containsErrorMessages({
+        is_active: ['is_active must be a boolean value'],
+      })
     })
 
     it('should a valid category', () => {
@@ -64,33 +66,39 @@ describe('Category Integration Tests', () => {
   describe('update method', () => {
     it('should a throw update when create using invalid property name', () => {
       let category = new Category({ name: 'Movie' })
-      expect(() => category.update(null)).toThrow(
-        new ValidatorError('The name is required!'),
-      )
-      expect(() => category.update('')).toThrow(
-        new ValidatorError('The name is required!'),
-      )
+      expect(() => category.update(null)).containsErrorMessages({
+        name: [
+          'name should not be empty',
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
 
-      expect(() => category.update(2 as any)).toThrow(
-        new ValidatorError('The name must be a string!'),
-      )
+      expect(() => category.update('')).containsErrorMessages({
+        name: ['name should not be empty'],
+      })
 
-      expect(() => category.update('t'.repeat(256))).toThrow(
-        new ValidatorError(
-          'The name must be less or equal than 255 characters!',
-        ),
-      )
+      expect(() => category.update(2 as any)).containsErrorMessages({
+        name: [
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
+
+      expect(() => category.update('t'.repeat(256))).containsErrorMessages({
+        name: ['name must be shorter than or equal to 255 characters'],
+      })
     })
 
     it('should a throw update when create using invalid property description', () => {
       let category = new Category({ name: 'Movie' })
-      expect(() => category.update('test', 1 as any)).toThrow(
-        new ValidatorError('The description must be a string!'),
-      )
+      expect(() => category.update('test', 1 as any)).containsErrorMessages({
+        description: ['description must be a string'],
+      })
 
-      expect(() => category.update('test', true as any)).toThrow(
-        new ValidatorError('The description must be a string!'),
-      )
+      expect(() => category.update('test', true as any)).containsErrorMessages({
+        description: ['description must be a string'],
+      })
     })
 
     it('should a valid update', () => {

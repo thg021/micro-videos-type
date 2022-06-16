@@ -9,7 +9,7 @@ describe('ClassValidatorFields Unit Test', () => {
   it('should inialize error and validatedData variables with null', () => {
     const validator = new StubClassValidatorFields()
     expect(validator.errors).toBeNull()
-    expect(validator.validateDate).toBeNull()
+    expect(validator.validatedData).toBeNull()
   })
 
   it('should validate with errors', () => {
@@ -22,7 +22,7 @@ describe('ClassValidatorFields Unit Test', () => {
 
     expect(validator.validate(null)).toBeFalsy()
     expect(spyValidateSync).toHaveBeenCalled()
-    expect(validator.validateDate).toBeNull()
+    expect(validator.validatedData).toBeNull()
     expect(validator.errors).toStrictEqual({ field: ['some error'] })
   })
 
@@ -34,7 +34,7 @@ describe('ClassValidatorFields Unit Test', () => {
 
     expect(validator.validate({ field: 'some value' })).toBeTruthy()
     expect(spyValidateSync).toHaveBeenCalled()
-    expect(validator.validateDate).toStrictEqual({ field: 'some value' })
+    expect(validator.validatedData).toStrictEqual({ field: 'some value' })
     expect(validator.errors).toBeNull()
   })
 })
