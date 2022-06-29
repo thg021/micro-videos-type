@@ -22,7 +22,7 @@ export type SearchProps<Filter = string> = {
 
 export class SearchParams {
   protected _page: number
-  protected _per_page: number = 15
+  protected _per_page = 15
   protected _sort: string | null
   protected _sort_dir: SortDirection | null
   protected _filter: string | null
@@ -67,7 +67,7 @@ export class SearchParams {
     this._per_page = _per_page
   }
 
-  get sort() {
+  get sort(): string | null {
     return this._sort
   }
 
@@ -90,7 +90,7 @@ export class SearchParams {
     this._sort_dir = dir !== 'asc' && dir !== 'desc' ? 'asc' : dir
   }
 
-  get filter() {
+  get filter(): string | null {
     return this._filter
   }
 
@@ -151,5 +151,6 @@ export interface SearchableRepositoryInterface<
   SearchInput = SearchParams,
   SearchOutput = SearchResult<E, Filter>,
 > extends RepositoryInterface<E> {
-  search(props: SearchInput): SearchOutput
+  sortableFields: string[]
+  search(props: SearchInput): Promise<SearchOutput>
 }
