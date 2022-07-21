@@ -1,4 +1,4 @@
-import { SearchParams, SearchResult } from './repository-contracts'
+import { SearchParams, SearchResult } from '../repository-contracts'
 describe('SearchParams Unit tests', () => {
   test('page props', () => {
     const arrange = [
