@@ -33,7 +33,8 @@
 	"esbenp.prettier-vscode",
 	"donjayamanne.githistory",
 	"mhutchie.git-graph",
-	"dbaeumer.vscode-eslint"
+	"dbaeumer.vscode-eslint",
+	"johnpapa.vscode-peacock"
 ]
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
