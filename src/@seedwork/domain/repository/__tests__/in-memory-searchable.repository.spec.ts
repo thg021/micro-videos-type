@@ -244,5 +244,43 @@ describe('InMemorySearchableRepository Unit Tests', () => {
                 expect(result).toStrictEqual(i.result)
             }
         })
+
+        it('should search using all properties', async () => {
+            const items = [
+                new StubEntity({ name: 'Test', price: 5 }),
+                new StubEntity({ name: 'd', price: 5 }),
+                new StubEntity({ name: 'Fake', price: 0 }),
+                new StubEntity({ name: 'b', price: 0 }),
+                new StubEntity({ name: 'Ok', price: 0 }),
+                new StubEntity({ name: 'b', price: 0 }),
+            ]
+
+            repository.items = items
+            const arrange = [
+                {
+                    params: new SearchParams({
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        per_page: 2,
+                        page: 1,
+                        filter: 'b',
+                    }),
+                    result: new SearchResult({
+                        items: [items[3], items[5]],
+                        total: 2,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        filter: 'b',
+                        sort_dir: 'asc',
+                    }),
+                },
+            ]
+
+            for (const i of arrange) {
+                let result = await repository.search(i.params)
+                expect(result).toStrictEqual(i.result)
+            }
+        })
     })
 })
