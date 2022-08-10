@@ -149,5 +149,100 @@ describe('InMemorySearchableRepository Unit Tests', () => {
                 }),
             )
         })
+
+        it('should apply paginate and filter', async () => {
+            const items = [
+                new StubEntity({ name: 'test', price: 5 }),
+                new StubEntity({ name: 'TEST', price: 5 }),
+                new StubEntity({ name: 'FAke', price: 0 }),
+            ]
+
+            repository.items = items
+            const result = await repository.search(
+                new SearchParams({ filter: 'TEST' }),
+            )
+
+            expect(result).toStrictEqual(
+                new SearchResult({
+                    items: [items[0], items[1]],
+                    total: 2,
+                    current_page: 1,
+                    per_page: 15,
+                    sort: null,
+                    filter: 'TEST',
+                    sort_dir: null,
+                }),
+            )
+        })
+
+        it('should apply paginate and sort', async () => {
+            const items = [
+                new StubEntity({ name: 'c', price: 5 }),
+                new StubEntity({ name: 'd', price: 5 }),
+                new StubEntity({ name: 'a', price: 0 }),
+                new StubEntity({ name: 'b', price: 0 }),
+                new StubEntity({ name: 'e', price: 0 }),
+            ]
+
+            repository.items = items
+            const arrange = [
+                {
+                    params: new SearchParams({
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        per_page: 2,
+                        page: 1,
+                    }),
+                    result: new SearchResult({
+                        items: [items[2], items[3]],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        filter: null,
+                        sort_dir: 'asc',
+                    }),
+                },
+                {
+                    params: new SearchParams({
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        per_page: 2,
+                        page: 2,
+                    }),
+                    result: new SearchResult({
+                        items: [items[0], items[1]],
+                        total: 5,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        filter: null,
+                        sort_dir: 'asc',
+                    }),
+                },
+                {
+                    params: new SearchParams({
+                        sort: 'name',
+                        sort_dir: 'desc',
+                        per_page: 2,
+                        page: 1,
+                    }),
+                    result: new SearchResult({
+                        items: [items[4], items[1]],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        filter: null,
+                        sort_dir: 'desc',
+                    }),
+                },
+            ]
+
+            for (const i of arrange) {
+                let result = await repository.search(i.params)
+                expect(result).toStrictEqual(i.result)
+            }
+        })
     })
 })
