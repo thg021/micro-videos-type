@@ -61,6 +61,11 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
             expect(itensFiltered).toStrictEqual([items[0], items[1]])
             expect(spyFilterMethod).toHaveBeenCalledTimes(2)
+
+            itensFiltered = await repository['applyFilter'](items, 'any')
+
+            expect(itensFiltered).toHaveLength(0)
+            expect(spyFilterMethod).toHaveBeenCalledTimes(3)
         })
     })
 
