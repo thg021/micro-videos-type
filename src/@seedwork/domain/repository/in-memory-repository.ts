@@ -111,7 +111,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
         per_page: SearchParams['per_page'],
     ): Promise<E[]> {
         const start = (page - 1) * per_page // 0 * 10 = 0
-        const limit = start + (per_page - 1) // 0 + 10 = 10
+        const limit = start + per_page // 0 + 10 = 10
         return items.slice(start, limit)
     }
 }
