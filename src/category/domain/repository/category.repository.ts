@@ -14,7 +14,7 @@ export namespace CategoryRepository {
 
     export class SearchResult extends DefaultSearchResult<Category, Filter> {}
 
-    export interface Repository
+    export interface IRepository
         extends SearchableRepositoryInterface<
             Category,
             Filter,
