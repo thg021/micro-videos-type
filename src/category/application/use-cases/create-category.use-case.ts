@@ -1,19 +1,15 @@
+import IUseCase from '../../../@seedwork/application/use-case'
 import { Category } from '../../domain/entities/category'
 import CategoryRepository from '../../domain/repository/category.repository'
-import { CategoryOutputDTO } from '../dto/category-output.dto'
+import { CategoryOutputMapper } from '../dto/category-output'
+import { CategoryOutputDTO } from '../dto/category-output'
 
-export default class CreateCategoryUseCase {
+export default class CreateCategoryUseCase implements IUseCase<Input, Output> {
     constructor(private categoryRepo: CategoryRepository.IRepository) {}
     async execute(input: Input): Promise<Output> {
         const entity = new Category(input)
         await this.categoryRepo.insert(entity)
-        return {
-            id: entity.id,
-            name: entity.name,
-            description: entity.description,
-            is_active: entity.is_active,
-            created_at: entity.created_at,
-        }
+        return CategoryOutputMapper.toOutput(entity)
     }
 }
 

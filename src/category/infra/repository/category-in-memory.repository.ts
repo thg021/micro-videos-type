@@ -5,7 +5,7 @@ import { SortDirection } from '@seedwork/domain/repository/repository-contracts'
 
 export default class CategoryInMemoryRepository
     extends InMemorySearchableRepository<Category>
-    implements CategoryRepository.Repository
+    implements CategoryRepository.IRepository
 {
     sortableFields: string[] = ['name', 'created_at']
 
