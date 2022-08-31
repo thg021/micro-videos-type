@@ -9,7 +9,7 @@ export default class DeleteCategoryUseCase implements IUseCase<Input, Output> {
     }
 }
 
-export type Input = {
+type Input = {
     id: string
 }
 

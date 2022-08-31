@@ -11,8 +11,8 @@ export default class GetCategoryUseCase implements IUseCase<Input, Output> {
     }
 }
 
-export type Input = {
+type Input = {
     id: string
 }
 
-export type Output = CategoryOutputDTO
+type Output = CategoryOutputDTO

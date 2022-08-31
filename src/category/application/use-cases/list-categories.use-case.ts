@@ -1,9 +1,9 @@
 import {
     PaginationOutputDto,
     PaginationOutputMapper,
-} from '../../../@seedwork/application/dto/pagination-output'
-import { SearchInputDto } from '../../../@seedwork/application/dto/search-input'
-import IUseCase from '../../../@seedwork/application/use-case'
+} from '@seedwork/application/dto/pagination-output'
+import { SearchInputDto } from '@seedwork/application/dto/search-input'
+import IUseCase from '@seedwork/application/use-case'
 import CategoryRepository from '../../domain/repository/category.repository'
 import { CategoryOutputDTO, CategoryOutputMapper } from '../dto/category-output'
 
@@ -26,6 +26,6 @@ export default class ListCategoriesUseCase implements IUseCase<Input, Output> {
     }
 }
 
-export type Input = SearchInputDto
+type Input = SearchInputDto
 
-export type Output = PaginationOutputDto<CategoryOutputDTO>
+type Output = PaginationOutputDto<CategoryOutputDTO>

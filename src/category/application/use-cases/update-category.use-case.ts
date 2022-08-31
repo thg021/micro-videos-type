@@ -21,11 +21,11 @@ export default class UpdateCategoryUseCase implements IUseCase<Input, Output> {
     }
 }
 
-export type Input = {
+type Input = {
     id: string
     name: string
     description?: string
     is_active?: boolean
 }
 
-export type Output = CategoryOutputDTO
+type Output = CategoryOutputDTO

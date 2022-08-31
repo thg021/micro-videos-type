@@ -3,13 +3,19 @@
     "version": "1.0.0",
     "description": "admin micro videos",
     "main": "index.js",
+    "imports": {
+        "#seedwork/*": "./dist/@seedwork/*.js",
+        "#category/*": "./dist/category/*.js"
+    },
     "scripts": {
         "ts-node": "ts-node",
         "tsc": "tsc",
         "tsc:check": "npm run tsc -- --noEmit",
         "clean:tsc": "rm tsconfig.tsbuildinfo",
         "test": "jest",
-        "test:cov": "npm run test -- --coverage"
+        "test:cov": "npm run test -- --coverage",
+        "cti": "cti",
+        "cti:@core": "sh ./cti.sh"
     },
     "keywords": [],
     "author": "",
@@ -24,6 +30,7 @@
         "@types/uuid": "^8.3.4",
         "@typescript-eslint/eslint-plugin": "^5.27.1",
         "@typescript-eslint/parser": "^5.27.1",
+        "create-ts-index": "^1.14.0",
         "eslint": "^8.17.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard": "^17.0.0",
