@@ -1,7 +1,7 @@
-import UniqueEntityId from '#seedwork/domain/value-objects/unique-entity-id.vo'
-import Entity from '#seedwork/domain/entity/entity'
+import UniqueEntityId from '@seedwork/domain/value-objects/unique-entity-id.vo'
+import Entity from '@seedwork/domain/entity/entity'
 import CategoryValidatorFactory from '../validator/category.validator'
-import { EntityValidationError } from '#seedwork/domain/errors/validator-error'
+import { EntityValidationError } from '@seedwork/domain/errors/validator-error'
 export type CategoryProperties = {
     name: string
     description?: string
