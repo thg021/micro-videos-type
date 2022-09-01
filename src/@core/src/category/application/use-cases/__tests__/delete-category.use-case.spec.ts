@@ -5,11 +5,11 @@ import DeleteCategoryUseCase from '../delete-category.use-case'
 
 describe('DeleteCategoryUseCase Unit Tests', () => {
     let repository: CategoryInMemoryRepository
-    let useCase: DeleteCategoryUseCase
+    let useCase: DeleteCategoryUseCase.UseCase
 
     beforeEach(() => {
         repository = new CategoryInMemoryRepository()
-        useCase = new DeleteCategoryUseCase(repository)
+        useCase = new DeleteCategoryUseCase.UseCase(repository)
     })
 
     it('should throws error when entity not found', async () => {

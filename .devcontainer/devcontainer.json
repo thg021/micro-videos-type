@@ -34,7 +34,8 @@
 	"donjayamanne.githistory",
 	"mhutchie.git-graph",
 	"dbaeumer.vscode-eslint",
-	"johnpapa.vscode-peacock"
+	"johnpapa.vscode-peacock",
+	"humao.rest-client"
 ]
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

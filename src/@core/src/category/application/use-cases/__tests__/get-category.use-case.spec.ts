@@ -4,12 +4,12 @@ import CategoryInMemoryRepository from '../../../infra/repository/category-in-me
 import GetCategoryUseCase from '../get-category.use-case'
 
 describe('CreateCategoryUseCase Unit Test', () => {
-    let useCase: GetCategoryUseCase
+    let useCase: GetCategoryUseCase.UseCase
     let repository: CategoryInMemoryRepository
 
     beforeEach(() => {
         repository = new CategoryInMemoryRepository()
-        useCase = new GetCategoryUseCase(repository)
+        useCase = new GetCategoryUseCase.UseCase(repository)
     })
 
     it('should throws error when entity not found', async () => {
