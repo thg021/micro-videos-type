@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCategoryDto } from './create-category.dto';
+import { UpdateCategoryUseCase } from '@fc/code-videos/category/application';
 
-export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
+export class UpdateCategoryDto implements UpdateCategoryUseCase.Input {
+  id: string;
+  name: string;
+  description?: string;
+  is_active?: boolean;
+}
+
+// export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
+//patch uma atualização parcial. PartialType ele pegar o tipo do create

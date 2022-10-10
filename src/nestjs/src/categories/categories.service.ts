@@ -17,7 +17,7 @@ export class CategoriesService {
     return this.createUseCases.execute(createCategoryDto);
   }
 
-  findAll(input: ListCategoriesUseCase.Input) {
+  search(input: ListCategoriesUseCase.Input) {
     return this.listUseCases.execute(input);
   }
 
