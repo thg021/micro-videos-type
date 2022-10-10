@@ -1,1 +1,8 @@
-GET http://localhost:8889
+GET http://localhost:8889/categories
+
+###
+POST http://localhost:8889/categories
+
+###
+DELETE http://localhost:8889/categories
+

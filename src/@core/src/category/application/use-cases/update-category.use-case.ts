@@ -3,6 +3,15 @@ import IUseCase from '../../../@seedwork/application/use-case'
 import { CategoryOutputDTO, CategoryOutputMapper } from '../dto/category-output'
 
 export namespace UpdateCategoryUseCase {
+    export type Input = {
+        id: string
+        name: string
+        description?: string
+        is_active?: boolean
+    }
+
+    export type Output = CategoryOutputDTO
+
     export class UseCase implements IUseCase<Input, Output> {
         constructor(private categoryRepo: CategoryRepository.IRepository) {}
         async execute(input: Input): Promise<Output> {
@@ -21,15 +30,6 @@ export namespace UpdateCategoryUseCase {
             return CategoryOutputMapper.toOutput(entity)
         }
     }
-
-    export type Input = {
-        id: string
-        name: string
-        description?: string
-        is_active?: boolean
-    }
-
-    export type Output = CategoryOutputDTO
 }
 
 export default UpdateCategoryUseCase
