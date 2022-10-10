@@ -5,13 +5,12 @@ import {
   DeleteCategoryUseCase,
   GetCategoryUseCase,
 } from '@fc/code-videos/category/application';
-import { SearchParams } from '@fc/code-videos/dist/@seedwork/domain/repository/repository-contracts';
+
 import {
   Controller,
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Inject,
@@ -19,7 +18,6 @@ import {
   HttpCode,
   Query,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -44,7 +42,6 @@ export class CategoriesController {
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.createUseCase.execute(createCategoryDto);
-    //return this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
