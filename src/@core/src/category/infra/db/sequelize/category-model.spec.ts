@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize-typescript'
+import { DataType, Sequelize } from 'sequelize-typescript'
 import { CategoryModel } from './category-model'
 
 describe('CategoryModel unit test', () => {
@@ -21,6 +21,58 @@ describe('CategoryModel unit test', () => {
 
     afterEach(async () => {
         await sequelize.close()
+    })
+
+    test('mapping properties', async () => {
+        const atributesMap = CategoryModel.getAttributes()
+        const attributes = Object.keys(atributesMap)
+        expect(attributes).toStrictEqual([
+            'id',
+            'name',
+            'description',
+            'is_active',
+            'created_at',
+        ])
+
+        console.log(atributesMap)
+
+        const idAttr = atributesMap.id
+        expect(idAttr).toMatchObject({
+            field: 'id',
+            fieldName: 'id',
+            primaryKey: true,
+            type: DataType.UUID(),
+        })
+
+        const nameAttr = atributesMap.name
+        expect(nameAttr).toMatchObject({
+            field: 'name',
+            fieldName: 'name',
+            type: DataType.STRING(255),
+        })
+
+        const descriptionAttr = atributesMap.description
+        expect(descriptionAttr).toMatchObject({
+            field: 'description',
+            fieldName: 'description',
+            type: DataType.TEXT(),
+        })
+
+        const isActiveAttr = atributesMap.is_active
+        expect(isActiveAttr).toMatchObject({
+            field: 'is_active',
+            fieldName: 'is_active',
+            type: DataType.BOOLEAN(),
+            allowNull: false,
+        })
+
+        const createdAtAttr = atributesMap.created_at
+        expect(createdAtAttr).toMatchObject({
+            field: 'created_at',
+            fieldName: 'created_at',
+            type: DataType.DATE(),
+            allowNull: false,
+        })
     })
 
     it('should be create', async () => {
