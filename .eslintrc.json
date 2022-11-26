@@ -21,6 +21,8 @@
         "no-useless-constructor": "off",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-empty-interface": "off",
-        "dot-notation": "off"
+        "dot-notation": "off",
+        "n/handle-callback-err": "off",
+        "@typescript-eslint/no-var-requires": "off"
     }
 }

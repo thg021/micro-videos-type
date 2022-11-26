@@ -1,6 +1,6 @@
 import { Category } from '../../../../category/domain/entities/category'
 import NotFoundError from '../../../../@seedwork/domain/errors/not-found-error'
-import { CategoryInMemoryRepository } from '../../../infra/repository/category-in-memory.repository'
+import { CategoryInMemoryRepository } from '#category/infra/db/in-memory'
 import GetCategoryUseCase from '../get-category.use-case'
 
 describe('CreateCategoryUseCase Unit Test', () => {

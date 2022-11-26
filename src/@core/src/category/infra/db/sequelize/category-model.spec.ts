@@ -1,28 +1,9 @@
+import { setupSequelize } from '#seedwork/infra/testing/helpers/db'
 import { DataType, Sequelize } from 'sequelize-typescript'
 import { CategoryModel } from './category-model'
 
 describe('CategoryModel unit test', () => {
-    let sequelize: Sequelize
-
-    beforeAll(() => {
-        sequelize = new Sequelize({
-            dialect: 'sqlite',
-            host: ':memory:',
-            logging: false,
-            models: [CategoryModel],
-        })
-    })
-
-    beforeEach(async () => {
-        await sequelize.sync({
-            force: true,
-        })
-    })
-
-    afterEach(async () => {
-        await sequelize.close()
-    })
-
+    setupSequelize({ models: [CategoryModel] })
     test('mapping properties', async () => {
         const atributesMap = CategoryModel.getAttributes()
         const attributes = Object.keys(atributesMap)
@@ -33,8 +14,6 @@ describe('CategoryModel unit test', () => {
             'is_active',
             'created_at',
         ])
-
-        console.log(atributesMap)
 
         const idAttr = atributesMap.id
         expect(idAttr).toMatchObject({
