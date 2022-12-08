@@ -1,5 +1,5 @@
 import ValueObject from '../value-object'
-//Para class abstratas precisaremos gerar um STUB
+// Para class abstratas precisaremos gerar um STUB
 
 class StubValueObject extends ValueObject {}
 describe('Value Objects test unit', () => {
@@ -11,7 +11,7 @@ describe('Value Objects test unit', () => {
         expect(vo.value).toStrictEqual({ prop1: 'value1' })
     })
 
-    it('should  covert to a string', () => {
+    describe('should  covert to a string', () => {
         const date = new Date()
         const data = [
             { received: '', expected: '' },
@@ -25,10 +25,13 @@ describe('Value Objects test unit', () => {
             },
         ]
 
-        data.forEach((item) => {
-            const vo = new StubValueObject(item.received)
-            expect(vo + '').toBe(item.expected)
-        })
+        test.each(data)(
+            'from $received to $expected',
+            ({ received, expected }) => {
+                const vo = new StubValueObject(received)
+                expect(vo + '').toBe(expected)
+            },
+        )
     })
 
     it('should be a immutable object', () => {
