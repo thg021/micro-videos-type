@@ -139,9 +139,11 @@ export class SearchResult<E extends Entity = Entity, Filter = string> {
         this.filter = props.filter
     }
 
-    toJSON() {
+    toJSON(forceEntity = false) {
         return {
-            items: this.items,
+            items: forceEntity
+                ? this.items.map((item) => item.toJSON())
+                : this.items,
             total: this.total,
             current_page: this.current_page,
             last_page: this.last_page,
