@@ -3,6 +3,7 @@ import { setupSequelize } from '#seedwork/infra/testing/helpers/db'
 import UniqueEntityId from '#seedwork/domain/value-objects/unique-entity-id.vo'
 import _chance from 'chance'
 import { CategorySequelize } from './category-sequelize'
+import NotFoundError from '#seedwork/domain/errors/not-found-error'
 const { CategoryModel, CategoryModelMapper, CategorySequelizeRepository } =
     CategorySequelize
 const chance = _chance()
@@ -395,20 +396,48 @@ describe('Category SequelizeRepository Unit Test', () => {
         })
     })
 
-    // describe('Update', () => {
-    //     it('should updates an entity', async () => {
-    //         const category = new Category({ name: 'Movie' })
-    //         await repository.insert(category)
+    describe('Update', () => {
+        it('should updates an entity', async () => {
+            const category = new Category({ name: 'Movie' })
+            await repository.insert(category)
 
-    //         const updatedCategory = new Category(
-    //             { name: 'horror' },
-    //             category.uniqueEntityId,
-    //         )
-    //         await repository.update(updatedCategory)
+            category.update('Horror', category.description)
+            await repository.update(category)
 
-    //         expect(updatedCategory.toJSON()).toStrictEqual(category.toJSON())
-    //     })
-    // })
+            const entityFound = await repository.findById(category.id)
+
+            expect(category.toJSON()).toStrictEqual(entityFound.toJSON())
+        })
+    })
+
+    describe('Delete', () => {
+        it('should throws an error when delete an entity not found', async () => {
+            await expect(repository.delete('fake id')).rejects.toThrow(
+                new NotFoundError('Entity Not Found using ID fake id'),
+            )
+
+            await expect(
+                repository.delete(
+                    new UniqueEntityId('ab74a047-124f-49dc-a0da-7d94dfcd280a'),
+                ),
+            ).rejects.toThrow(
+                new NotFoundError(
+                    'Entity Not Found using ID ab74a047-124f-49dc-a0da-7d94dfcd280a',
+                ),
+            )
+        })
+
+        it('should delete an entity', async () => {
+            const entity = new Category({ name: 'move' })
+            await repository.insert(entity)
+
+            await repository.delete(entity.id)
+            const entityFound = await CategorySequelize.CategoryModel.findByPk(
+                entity.id,
+            )
+            expect(entityFound).toBeNull()
+        })
+    })
 
     // it.todo('should be able to update an existing entity', async () => {})
 })
