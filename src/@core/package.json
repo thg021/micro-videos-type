@@ -79,6 +79,7 @@
     "dependencies": {
         "chance": "^1.1.9",
         "class-validator": "^0.13.2",
+        "dotenv": "^16.0.3",
         "regenerator-runtime": "^0.13.9",
         "sequelize": "^6.25.2",
         "sequelize-typescript": "^2.1.5",
