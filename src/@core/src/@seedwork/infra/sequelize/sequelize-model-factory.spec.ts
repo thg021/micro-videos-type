@@ -5,7 +5,6 @@ import {
     DataType,
     Model,
     PrimaryKey,
-    Sequelize,
     Table,
 } from 'sequelize-typescript'
 import { validate as uuidValidated } from 'uuid'
