@@ -1,18 +1,25 @@
-import { Category } from '../../../../category/domain/entities/category'
-import NotFoundError from '../../../../@seedwork/domain/errors/not-found-error'
-import CategoryInMemoryRepository from '../../../../category/infra/repository/category-in-memory.repository'
-import UpdateCategoryUseCase from '../update-category.use-case'
+import { Category } from '../../../../../category/domain/entities/category'
+import NotFoundError from '../../../../../@seedwork/domain/errors/not-found-error'
+import { CategoryInMemoryRepository } from '#category/infra/db/in-memory'
+import UpdateCategoryUseCase from '../../update-category.use-case'
+import { setupSequelize } from '#seedwork/infra/testing/helpers/db'
+import { CategorySequelize } from '#category/infra/db/sequelize/category-sequelize'
 
-describe('UpdateCategoryUseCase Unit Tests', () => {
-    let repository: CategoryInMemoryRepository
+const { CategorySequelizeRepository, CategoryModel } = CategorySequelize
+
+describe('UpdateCategoryUseCase Integration Tests', () => {
     let useCase: UpdateCategoryUseCase.UseCase
+    let repository: CategorySequelize.CategorySequelizeRepository
+
+    setupSequelize({ models: [CategoryModel] })
+
     beforeEach(() => {
-        repository = new CategoryInMemoryRepository()
+        repository = new CategorySequelizeRepository(CategoryModel)
         useCase = new UpdateCategoryUseCase.UseCase(repository)
     })
 
     it('should throws error when entity not found', async () => {
-        expect(() =>
+        await expect(() =>
             useCase.execute({ id: 'fake id', name: 'fake name' }),
         ).rejects.toThrowError(
             new NotFoundError(`Entity Not Found using ID fake id`),
@@ -20,12 +27,9 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
     })
 
     it('should update category', async () => {
-        const spyUpdate = jest.spyOn(repository, 'update')
-        const entity = new Category({ name: 'Movie' })
-        repository.items = [entity]
+        const entity = await CategoryModel.factory().create()
 
         let output = await useCase.execute({ id: entity.id, name: 'Cartoon' })
-        expect(spyUpdate).toHaveBeenCalledTimes(1)
         expect(output).toStrictEqual({
             id: entity.id,
             name: 'Cartoon',

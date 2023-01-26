@@ -1,5 +1,5 @@
-import { Category } from '../../domain/entities/category'
-import CategoryInMemoryRepository from './category-in-memory.repository'
+import { Category } from '../../../domain/entities/category'
+import { CategoryInMemoryRepository } from './category-in-memory.repository'
 
 describe('Category in memory unit test', () => {
     let repository: CategoryInMemoryRepository
@@ -27,7 +27,6 @@ describe('Category in memory unit test', () => {
     it('should return the list of items when filter is null ', async () => {
         repository.items = items
         const itemsFiltered = await repository['applyFilter'](items, null)
-
         expect(itemsFiltered).toStrictEqual(items)
     })
 
@@ -39,7 +38,7 @@ describe('Category in memory unit test', () => {
 
     it('should sort by created_at field when params null', async () => {
         repository.items = items
-        let itemsSorted = await repository['applySort'](items, null, null)
+        const itemsSorted = await repository['applySort'](items, null, null)
         expect(itemsSorted).toStrictEqual([
             items[0],
             items[3],

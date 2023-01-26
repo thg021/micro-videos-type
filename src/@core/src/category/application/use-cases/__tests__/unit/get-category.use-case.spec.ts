@@ -1,7 +1,7 @@
-import { Category } from '../../../../category/domain/entities/category'
-import NotFoundError from '../../../../@seedwork/domain/errors/not-found-error'
-import CategoryInMemoryRepository from '../../../infra/repository/category-in-memory.repository'
-import GetCategoryUseCase from '../get-category.use-case'
+import { Category } from '../../../../../category/domain/entities/category'
+import NotFoundError from '../../../../../@seedwork/domain/errors/not-found-error'
+import { CategoryInMemoryRepository } from '#category/infra/db/in-memory'
+import GetCategoryUseCase from '../../get-category.use-case'
 
 describe('CreateCategoryUseCase Unit Test', () => {
     let useCase: GetCategoryUseCase.UseCase
@@ -23,7 +23,7 @@ describe('CreateCategoryUseCase Unit Test', () => {
         repository.items = items
 
         const spyFindById = jest.spyOn(repository, 'findById')
-        let output = await useCase.execute({ id: items[0].id })
+        const output = await useCase.execute({ id: items[0].id })
 
         expect(spyFindById).toHaveBeenCalledTimes(1)
         expect(output).toStrictEqual({

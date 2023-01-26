@@ -35,7 +35,8 @@
 	"mhutchie.git-graph",
 	"dbaeumer.vscode-eslint",
 	"johnpapa.vscode-peacock",
-	"humao.rest-client"
+	"humao.rest-client",
+	"TabNine.tabnine-vscode"
 ]
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

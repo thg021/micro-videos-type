@@ -34,7 +34,7 @@ class StubInMemorySearchableRepository extends InMemorySearchableRepository<Stub
 describe('InMemorySearchableRepository Unit Tests', () => {
     let repository: StubInMemorySearchableRepository
 
-    //rodar antes de cada teste
+    // rodar antes de cada teste
     beforeEach(() => (repository = new StubInMemorySearchableRepository()))
     describe('applyFilter method', () => {
         it('should no filter items when filter param is null ', async () => {
@@ -240,12 +240,12 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             ]
 
             for (const i of arrange) {
-                let result = await repository.search(i.params)
+                const result = await repository.search(i.params)
                 expect(result).toStrictEqual(i.result)
             }
         })
 
-        it('should search using all properties', async () => {
+        describe('should search using all properties', () => {
             const items = [
                 new StubEntity({ name: 'Test', price: 5 }),
                 new StubEntity({ name: 'd', price: 5 }),
@@ -255,7 +255,6 @@ describe('InMemorySearchableRepository Unit Tests', () => {
                 new StubEntity({ name: 'b', price: 0 }),
             ]
 
-            repository.items = items
             const arrange = [
                 {
                     params: new SearchParams({
@@ -265,7 +264,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
                         page: 1,
                         filter: 'b',
                     }),
-                    result: new SearchResult({
+                    params_result: new SearchResult({
                         items: [items[3], items[5]],
                         total: 2,
                         current_page: 1,
@@ -277,10 +276,17 @@ describe('InMemorySearchableRepository Unit Tests', () => {
                 },
             ]
 
-            for (const i of arrange) {
-                let result = await repository.search(i.params)
-                expect(result).toStrictEqual(i.result)
-            }
+            beforeEach(() => {
+                repository.items = items
+            })
+
+            test.each(arrange)(
+                'When value is %j',
+                async ({ params, params_result }) => {
+                    const result = await repository.search(params)
+                    expect(result).toStrictEqual(params_result)
+                },
+            )
         })
     })
 })

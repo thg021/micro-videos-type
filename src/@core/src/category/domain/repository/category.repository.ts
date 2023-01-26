@@ -1,5 +1,3 @@
-//este contrato foi criado para atender as necessidades adicionais da entity
-
 import {
     SearchableRepositoryInterface,
     SearchParams as DefaultSearchParams,
@@ -24,3 +22,5 @@ export namespace CategoryRepository {
 }
 
 export default CategoryRepository
+
+// este contrato foi criado para atender as necessidades adicionais da entity

@@ -27,5 +27,9 @@
         "titleBar.inactiveBackground": "#f1c40f99",
         "titleBar.inactiveForeground": "#15202b99"
     },
-    "peacock.remoteColor": "#F1C40F"
+    "peacock.remoteColor": "#F1C40F",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": ["typescript", "typescriptreact"]
 }
