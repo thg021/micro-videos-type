@@ -16,11 +16,11 @@ describe('AppController', () => {
 
         appController = app.get<AppController>(AppController);
 
-        console.log(
-            app
-                .get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService)
-                .get<CONFIG_SCHEMA_TYPE['DB_VENDOR']>('DB_VENDOR'),
-        );
+        // console.log(
+        //     app
+        //         .get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService)
+        //         .get<CONFIG_SCHEMA_TYPE['DB_VENDOR']>('DB_VENDOR'),
+        // );
     });
 
     describe('root', () => {
