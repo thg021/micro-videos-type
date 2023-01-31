@@ -3,7 +3,7 @@ version: '3'
 services:
     app:
         build: .
-        container_name: micro-videos-typescript-app
+        container_name: micro-videos-typescript-app-1
         command: .docker/start.sh
         volumes:
             - .:/home/node/app

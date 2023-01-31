@@ -19,7 +19,7 @@ type DB_SCHEMA_TYPE = {
 
 export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE;
 
-const DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
+export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
     DB_VENDOR: Joi.string().required().valid('mysql', 'sqlite'),
     DB_HOST: Joi.string().required(),
     DB_DATABASE: Joi.string().when('DB_VENDOR', {
@@ -53,7 +53,7 @@ export class ConfigModule extends NestConfigModule {
                 join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
                 join(__dirname, '../envs/.env'),
             ],
-            validationSchema: Joi.object({ ...DB_SCHEMA }),
+            validationSchema: Joi.object({ ...CONFIG_DB_SCHEMA }),
             ...options,
         });
     }
