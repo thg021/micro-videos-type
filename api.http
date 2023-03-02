@@ -1,18 +1,18 @@
 GET http://localhost:3000/categories
 
 ###
-GET http://localhost:3000/categories/b4452093-964b-4ab8-9876-74da32ced784
+GET http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
 
 ###
 POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "name": "Movie"
+    "name": "Horror"
 }
 
 ###
-PUT http://localhost:3000/categories/b4452093-964b-4ab8-9876-74da32ced784
+PUT http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
 Content-Type: application/json
 
 {
@@ -20,5 +20,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3000/categories/b4452093-964b-4ab8-9876-74da32ced784
+DELETE  http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
 Content-Type: application/json
