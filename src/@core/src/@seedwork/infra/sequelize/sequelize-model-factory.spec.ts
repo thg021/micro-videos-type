@@ -1,169 +1,179 @@
-import { SequelizeModelFactory } from './sequelize-model-factory'
-import _chance from 'chance'
 import {
-    Column,
-    DataType,
-    Model,
-    PrimaryKey,
-    Table,
-} from 'sequelize-typescript'
-import { validate as uuidValidated } from 'uuid'
-import { setupSequelize } from '../testing/helpers/db'
+  Table,
+  Column,
+  PrimaryKey,
+  Model,
+  DataType,
+} from "sequelize-typescript";
+import { SequelizeModelFactory } from "./sequelize-model-factory";
+import _chance from "chance";
+import { validate as uuidValidate } from "uuid";
+import { setupSequelize } from "../testing/helpers/db";
 
-const chance = _chance()
+const chance = _chance();
 
 @Table({})
 class StubModel extends Model {
-    @PrimaryKey
-    @Column({ type: DataType.UUID })
-    declare id
+  @PrimaryKey
+  @Column({ type: DataType.UUID })
+  declare id;
 
-    @Column({ allowNull: false, type: DataType.STRING(255) })
-    declare name
+  @Column({ allowNull: false, type: DataType.STRING(255) })
+  declare name;
 
-    static mockFactory = jest.fn(() => ({
-        id: chance.guid({ version: 4 }),
-        name: chance.word(),
-    }))
+  static mockFactory = jest.fn(() => ({
+    id: chance.guid({ version: 4 }),
+    name: chance.word(),
+  }));
 
-    static factory() {
-        return new SequelizeModelFactory<
-            StubModel,
-            { id: string; name: string }
-        >(StubModel, StubModel.mockFactory)
-    }
+  static factory() {
+    return new SequelizeModelFactory<StubModel, { id: string; name: string }>(
+      StubModel,
+      StubModel.mockFactory
+    );
+  }
 }
 
-describe('SequelizeModelFactory unit tests', () => {
-    setupSequelize({ models: [StubModel] })
+describe("SequelizeModelFactory Unit Tests", () => {
+  setupSequelize({ models: [StubModel] });
 
-    describe('Create Method', () => {
-        it('should be able one register', async () => {
-            let model = await StubModel.factory().create()
-            expect(uuidValidated(model.id)).toBeTruthy()
-            expect(model.name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
+  test("create method", async () => {
+    let model = await StubModel.factory().create();
+    expect(uuidValidate(model.id)).toBeTruthy();
+    expect(model.id).not.toBeNull();
+    expect(model.name).not.toBeNull();
+    expect(StubModel.mockFactory).toHaveBeenCalled();
 
-            let modelFound = await StubModel.findByPk(model.id)
-            expect(model.id).toBe(modelFound.id)
+    let modelFound = await StubModel.findByPk(model.id);
+    expect(model.id).toBe(modelFound.id);
 
-            model = await StubModel.factory().create({
-                id: '13413155-bd02-456e-99c6-fd70cd16074f',
-                name: 'Movie',
-            })
-            expect(model.id).toBe('13413155-bd02-456e-99c6-fd70cd16074f')
-            expect(model.name).toBe('Movie')
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(1)
+    model = await StubModel.factory().create({
+      id: "9366b7dc-2d71-4799-b91c-c64adb205104",
+      name: "test",
+    });
+    expect(model.id).toBe("9366b7dc-2d71-4799-b91c-c64adb205104");
+    expect(model.name).toBe("test");
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
 
-            modelFound = await StubModel.findByPk(model.id)
-            expect(model.id).toBe(modelFound.id)
-        })
-    })
+    modelFound = await StubModel.findByPk(model.id);
+    expect(model.id).toBe(modelFound.id);
+  });
 
-    describe('Make Method', () => {
-        it('should be able one register', () => {
-            let model = StubModel.factory().make()
-            expect(uuidValidated(model.id)).toBeTruthy()
-            expect(model.name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
+  test("make method", async () => {
+    let model = StubModel.factory().make();
+    expect(uuidValidate(model.id)).toBeTruthy();
+    expect(model.id).not.toBeNull();
+    expect(model.name).not.toBeNull();
+    expect(StubModel.mockFactory).toHaveBeenCalled();
 
-            model = StubModel.factory().make({
-                id: '13413155-bd02-456e-99c6-fd70cd16074f',
-                name: 'Movie',
-            })
-            expect(model.id).toBe('13413155-bd02-456e-99c6-fd70cd16074f')
-            expect(model.name).toBe('Movie')
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(1)
-        })
-    })
+    model = StubModel.factory().make({
+      id: "9366b7dc-2d71-4799-b91c-c64adb205104",
+      name: "test",
+    });
+    expect(model.id).toBe("9366b7dc-2d71-4799-b91c-c64adb205104");
+    expect(model.name).toBe("test");
 
-    describe('BulkCreate Method', () => {
-        test('bulkcreate method using count 1', async () => {
-            let model = await StubModel.factory().bulkCreate()
-            expect(model).toHaveLength(1)
-            expect(model[0].id).not.toBeNull()
-            expect(model[0].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
+  });
 
-            const modelFound = await StubModel.findByPk(model[0].id)
-            expect(model[0].id).toBe(modelFound.id)
-            expect(model[0].name).toBe(modelFound.name)
+  test("bulkCreate method using count = 1", async () => {
+    let models = await StubModel.factory().bulkCreate();
 
-            model = await StubModel.factory().bulkCreate(() => ({
-                id: '13413155-bd02-456e-99c6-fd70cd16074f',
-                name: 'Movie',
-            }))
+    expect(models).toHaveLength(1);
+    expect(models[0].id).not.toBeNull();
+    expect(models[0].name).not.toBeNull();
+    expect(StubModel.mockFactory).toHaveBeenCalled();
 
-            expect(model[0].id).not.toBeNull()
-            expect(model[0].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
-        })
+    let modelFound = await StubModel.findByPk(models[0].id);
+    expect(models[0].id).toBe(modelFound.id);
+    expect(models[0].name).toBe(modelFound.name);
 
-        test('bulkcreate method using count > 1', async () => {
-            let models = await StubModel.factory().count(2).bulkCreate()
-            expect(models).toHaveLength(2)
-            expect(models[0].id).not.toBeNull()
-            expect(models[0].name).not.toBeNull()
-            expect(models[1].id).not.toBeNull()
-            expect(models[1].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(2)
+    models = await StubModel.factory().bulkCreate(() => ({
+      id: "9366b7dc-2d71-4799-b91c-c64adb205104",
+      name: "test",
+    }));
+    expect(models[0].id).toBe("9366b7dc-2d71-4799-b91c-c64adb205104");
+    expect(models[0].name).toBe("test");
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
 
-            const modelFound1 = await StubModel.findByPk(models[0].id)
-            expect(models[0].id).toBe(modelFound1.id)
-            expect(models[0].name).toBe(modelFound1.name)
+    modelFound = await StubModel.findByPk(models[0].id);
+    expect(models[0].id).toBe(modelFound.id);
+    expect(models[0].name).toBe(modelFound.name);
+  });
 
-            const modelFound2 = await StubModel.findByPk(models[0].id)
-            expect(models[0].id).toBe(modelFound2.id)
-            expect(models[0].name).toBe(modelFound2.name)
+  test("bulkCreate method using count > 1", async () => {
+    let models = await StubModel.factory().count(2).bulkCreate();
 
-            models = await StubModel.factory()
-                .count(2)
-                .bulkCreate(() => ({
-                    id: chance.guid({ version: 4 }),
-                    name: 'Movie',
-                }))
+    expect(models).toHaveLength(2);
+    expect(models[0].id).not.toBeNull();
+    expect(models[0].name).not.toBeNull();
+    expect(models[1].id).not.toBeNull();
+    expect(models[1].name).not.toBeNull();
+    expect(models[0].id).not.toBe(models[1].name);
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
 
-            expect(models[0].id).not.toBe(models[1].id)
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(2)
-        })
-    })
+    let modelFound1 = await StubModel.findByPk(models[0].id);
+    expect(models[0].id).toBe(modelFound1.id);
+    expect(models[0].name).toBe(modelFound1.name);
 
-    describe('BulkMake Method', () => {
-        test('bulkMake method using count 1', async () => {
-            let model = StubModel.factory().bulkMake()
-            expect(model).toHaveLength(1)
-            expect(model[0].id).not.toBeNull()
-            expect(model[0].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
+    let modelFound2 = await StubModel.findByPk(models[1].id);
+    expect(models[1].id).toBe(modelFound2.id);
+    expect(models[1].name).toBe(modelFound2.name);
 
-            model = await StubModel.factory().bulkMake(() => ({
-                id: '13413155-bd02-456e-99c6-fd70cd16074f',
-                name: 'Movie',
-            }))
+    models = await StubModel.factory()
+      .count(2)
+      .bulkCreate(() => ({
+        id: chance.guid({ version: 4 }),
+        name: "test",
+      }));
+    expect(models).toHaveLength(2);
+    expect(models[0].id).not.toBe(models[1].id);
+    expect(models[0].name).toBe("test");
+    expect(models[1].name).toBe("test");
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
+  });
 
-            expect(model[0].id).toBe('13413155-bd02-456e-99c6-fd70cd16074f')
-            expect(model[0].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalled()
-        })
+  test("bulkMake method using count = 1", async () => {
+    let models = StubModel.factory().bulkMake();
 
-        test('bulkMake method using count > 1', () => {
-            let models = StubModel.factory().count(2).bulkMake()
-            expect(models).toHaveLength(2)
-            expect(models[0].id).not.toBeNull()
-            expect(models[0].name).not.toBeNull()
-            expect(models[1].id).not.toBeNull()
-            expect(models[1].name).not.toBeNull()
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(2)
+    expect(models).toHaveLength(1);
+    expect(models[0].id).not.toBeNull();
+    expect(models[0].name).not.toBeNull();
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
 
-            models = StubModel.factory()
-                .count(2)
-                .bulkMake(() => ({
-                    id: chance.guid({ version: 4 }),
-                    name: 'Movie',
-                }))
+    models = StubModel.factory().bulkMake(() => ({
+      id: "5490020a-e866-4229-9adc-aa44b83234c4",
+      name: "test",
+    }));
 
-            expect(models[0].id).not.toBe(models[1].id)
-            expect(StubModel.mockFactory).toHaveBeenCalledTimes(2)
-        })
-    })
-})
+    expect(models).toHaveLength(1);
+    expect(models[0].id).toBe("5490020a-e866-4229-9adc-aa44b83234c4");
+    expect(models[0].name).toBe("test");
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
+  });
+
+  test("bulkMake method using count > 1", async () => {
+    let models = StubModel.factory().count(2).bulkMake();
+
+    expect(models).toHaveLength(2);
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
+    expect(models[0].id).not.toBeNull();
+    expect(models[0].name).not.toBeNull();
+    expect(models[1].id).not.toBeNull();
+    expect(models[1].name).not.toBeNull();
+    expect(models[0].id).not.toBe(models[1].name);
+
+    models = StubModel.factory()
+      .count(2)
+      .bulkMake(() => ({
+        id: chance.guid({ version: 4 }),
+        name: "test",
+      }));
+
+    expect(models).toHaveLength(2);
+    expect(models[0].id).not.toBe(models[1].id);
+    expect(models[0].name).toBe("test");
+    expect(models[1].name).toBe("test");
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
+  });
+});

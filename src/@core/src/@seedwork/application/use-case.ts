@@ -1,5 +1,5 @@
-export interface IUseCase<Input, Output> {
-    execute(input: Input): Output | Promise<Output>
+export interface UseCase<Input, Output> {
+  execute(input: Input): Output | Promise<Output>;
 }
 
-export default IUseCase
+export default UseCase;

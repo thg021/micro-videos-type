@@ -12,11 +12,13 @@ RUN mkdir -p /usr/share/man/man1 && \
     fonts-powerline \
     procps
 
-ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
 RUN npm install -g @nestjs/cli@8.2.5 npm@8.5.5
 
-USER node
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+# RUN usermod -o -u 268651330 node
+# USER node
+
 WORKDIR /home/node/app
 
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
@@ -29,6 +31,6 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -a 'export TERM=xterm-256color'
 
 RUN echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc && \
-    echo 'HISTFILE=/home/node/zsh/.zsh_history' >> ~/.zshrc
+    echo 'HISTFILE=/home/node/zsh/.zsh_history' >> ~/.zshrc 
 
 CMD [ "tail", "-f" , "/dev/null" ]

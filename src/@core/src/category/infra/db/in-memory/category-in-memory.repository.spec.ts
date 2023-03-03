@@ -1,68 +1,61 @@
-import { Category } from '../../../domain/entities/category'
-import { CategoryInMemoryRepository } from './category-in-memory.repository'
+import { Category } from "#category/domain/entities/category";
+import CategoryInMemoryRepository from "./category-in-memory.repository";
 
-describe('Category in memory unit test', () => {
-    let repository: CategoryInMemoryRepository
+describe("CategoryInMemoryRepository", () => {
+  let repository: CategoryInMemoryRepository;
+
+  beforeEach(() => (repository = new CategoryInMemoryRepository()));
+  it("should no filter items when filter object is null", async () => {
+    const items = [new Category({ name: "test" })];
+    const filterSpy = jest.spyOn(items, "filter" as any);
+
+    let itemsFiltered = await repository["applyFilter"](items, null);
+    expect(filterSpy).not.toHaveBeenCalled();
+    expect(itemsFiltered).toStrictEqual(items);
+  });
+
+  it("should filter items using filter parameter", async () => {
     const items = [
-        new Category({
-            name: 'b',
-            created_at: new Date('2022-08-11T00:00:00'),
-        }),
-        new Category({
-            name: 'test',
-            created_at: new Date('2022-08-10T00:00:00'),
-        }),
-        new Category({
-            name: 'a',
-            created_at: new Date('2022-08-09T00:00:00'),
-        }),
+      new Category({ name: "test" }),
+      new Category({ name: "TEST" }),
+      new Category({ name: "fake" }),
+    ];
+    const filterSpy = jest.spyOn(items, "filter" as any);
 
-        new Category({
-            name: 'c',
-            created_at: new Date('2022-08-11T00:00:00'),
-        }),
-    ]
+    let itemsFiltered = await repository["applyFilter"](items, "TEST");
+    expect(filterSpy).toHaveBeenCalledTimes(1);
+    expect(itemsFiltered).toStrictEqual([items[0], items[1]]);
+  });
 
-    beforeEach(() => (repository = new CategoryInMemoryRepository()))
-    it('should return the list of items when filter is null ', async () => {
-        repository.items = items
-        const itemsFiltered = await repository['applyFilter'](items, null)
-        expect(itemsFiltered).toStrictEqual(items)
-    })
+  it("should sort by created_at when sort param is null", async () => {
+    const created_at = new Date();
+    const items = [
+      new Category({ name: "test", created_at: created_at }),
+      new Category({
+        name: "TEST",
+        created_at: new Date(created_at.getTime() + 100),
+      }),
+      new Category({
+        name: "fake",
+        created_at: new Date(created_at.getTime() + 200),
+      }),
+    ];
 
-    it('should return the filtered items', async () => {
-        repository.items = items
-        const itemsFiltered = await repository['applyFilter'](items, 'TEST')
-        expect(itemsFiltered).toStrictEqual([items[1]])
-    })
+    let itemsSorted = await repository["applySort"](items, null, null);
+    expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
+  });
 
-    it('should sort by created_at field when params null', async () => {
-        repository.items = items
-        const itemsSorted = await repository['applySort'](items, null, null)
-        expect(itemsSorted).toStrictEqual([
-            items[0],
-            items[3],
-            items[1],
-            items[2],
-        ])
-    })
+  it("should sort by name", async () => {
+    const items = [
+      new Category({ name: "c" }),
+      new Category({ name: "b" }),
+      new Category({ name: "a" }),
+    ];
 
-    it('should sort the name property list', async () => {
-        repository.items = items
-        let itemsSorted = await repository['applySort'](items, 'name', null)
-        expect(itemsSorted).toStrictEqual([
-            items[1],
-            items[3],
-            items[0],
-            items[2],
-        ])
+    let itemsSorted = await repository["applySort"](items, "name", "asc");
+    expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
 
-        itemsSorted = await repository['applySort'](items, 'name', 'asc')
-        expect(itemsSorted).toStrictEqual([
-            items[2],
-            items[0],
-            items[3],
-            items[1],
-        ])
-    })
-})
+    itemsSorted = await repository["applySort"](items, "name", "desc");
+    expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
+  });
+});

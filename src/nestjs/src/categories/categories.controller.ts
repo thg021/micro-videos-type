@@ -1,11 +1,10 @@
 import {
   CreateCategoryUseCase,
-  ListCategoriesUseCase,
-  UpdateCategoryUseCase,
   DeleteCategoryUseCase,
   GetCategoryUseCase,
-} from '@fc/code-videos/category/application';
-
+  ListCategoriesUseCase,
+  UpdateCategoryUseCase,
+} from '@fc/micro-videos/category/application';
 import {
   Controller,
   Get,
@@ -22,10 +21,17 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+//Unit tests
+
+// Inject - casos - mongoose, typeorm
+//unidade - request e response
 @Controller('categories')
 export class CategoriesController {
   @Inject(CreateCategoryUseCase.UseCase)
   private createUseCase: CreateCategoryUseCase.UseCase;
+
+  @Inject(UpdateCategoryUseCase.UseCase)
+  private updateUseCase: UpdateCategoryUseCase.UseCase;
 
   @Inject(DeleteCategoryUseCase.UseCase)
   private deleteUseCase: DeleteCategoryUseCase.UseCase;
@@ -36,17 +42,16 @@ export class CategoriesController {
   @Inject(ListCategoriesUseCase.UseCase)
   private listUseCase: ListCategoriesUseCase.UseCase;
 
-  @Inject(UpdateCategoryUseCase.UseCase)
-  private updateUseCase: UpdateCategoryUseCase.UseCase;
+  //Arquitetura Hexagonal - Ports
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.createUseCase.execute(createCategoryDto);
   }
 
   @Get()
-  search(@Query() SearchParams: SearchCategoryDto) {
-    return this.listUseCase.execute(SearchParams);
+  search(@Query() searchParams: SearchCategoryDto) {
+    return this.listUseCase.execute(searchParams);
   }
 
   @Get(':id')
@@ -54,7 +59,7 @@ export class CategoriesController {
     return this.getUseCase.execute({ id });
   }
 
-  @Put(':id')
+  @Put(':id') //PUT vs PATCH
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,

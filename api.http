@@ -1,24 +1,24 @@
-GET http://localhost:8889/categories
-
-### 
-GET http://localhost:8889/categories/20da71d8-48b2-4818-9cf6-c35b8b605ae4
+GET http://localhost:3000/categories
 
 ###
-POST http://localhost:8889/categories
+GET http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
+
+###
+POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "name": "Test"
+    "name": "Horror"
 }
 
 ###
-DELETE http://localhost:8889/categories/4c66a7a5-0f67-41f0-86be-804ca37f8535
-
-###
-PUT http://localhost:8889/categories/8f86edac-45c14e3c-b0df-46b6bcada092
+PUT http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
 Content-Type: application/json
 
 {
-    "name": "Movie"
+    "name": "Movie111111"
 }
 
+###
+DELETE  http://localhost:3000/categories/bbc82606-6bf3-4713-8b5a-f3d89eaaf84e
+Content-Type: application/json

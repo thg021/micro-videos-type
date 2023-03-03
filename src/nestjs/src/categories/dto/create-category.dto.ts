@@ -1,4 +1,4 @@
-import { CreateCategoryUseCase } from '@fc/code-videos/category/application';
+import { CreateCategoryUseCase } from '@fc/micro-videos/category/application';
 
 export class CreateCategoryDto implements CreateCategoryUseCase.Input {
   name: string;

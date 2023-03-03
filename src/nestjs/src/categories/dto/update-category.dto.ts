@@ -1,4 +1,4 @@
-import { UpdateCategoryUseCase } from '@fc/code-videos/category/application';
+import { UpdateCategoryUseCase } from '@fc/micro-videos/category/application';
 
 export class UpdateCategoryDto
   implements Omit<UpdateCategoryUseCase.Input, 'id'>
@@ -7,6 +7,3 @@ export class UpdateCategoryDto
   description?: string;
   is_active?: boolean;
 }
-
-// export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
-//patch uma atualização parcial. PartialType ele pegar o tipo do create

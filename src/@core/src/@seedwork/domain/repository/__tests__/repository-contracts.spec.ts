@@ -1,344 +1,218 @@
-import {SearchParams, SearchResult} from '../repository-contracts'
+import { SearchParams, SearchResult } from "../repository-contracts";
 
-describe('Search Unit Tests', () => {
-  describe('SearchParams Unit tests', () => {
-    test('page props', () => {
-      const arrange = [
-        {
-          page: '',
-          expect: 1
-        },
-        {
-          page: null,
-          expect: 1
-        },
-        {
-          page: undefined,
-          expect: 1
-        },
-        {
-          page: true,
-          expect: 1
-        }, {
-          page: 'fake',
-          expect: 1
-        }, {
-          page: 3.1,
-          expect: 1
-        }, {
-          page: -1,
-          expect: 1
-        }, {
-          page: 1,
-          expect: 1
-        }, {
-          page: 99,
-          expect: 99
-        },
-      ] as any
-
-      const params = new SearchParams()
-      expect(params.page).toBe(1)
-
-      arrange.forEach((item) => {
-        const {page} = item
-        const params = new SearchParams({page})
-        expect(params.page).toBe(item.expect)
-      })
-    })
-
-    test('per page props', () => {
-      const arrange = [
-        {
-          per_page: '',
-          expect: 15
-        },
-        {
-          per_page: null,
-          expect: 15
-        },
-        {
-          per_page: undefined,
-          expect: 15
-        },
-        {
-          per_page: true,
-          expect: 15
-        }, {
-          per_page: false,
-          expect: 15
-        }, {
-          per_page: 'fake',
-          expect: 15
-        }, {
-          per_page: 3.15,
-          expect: 15
-        }, {
-          per_page: -1,
-          expect: 15
-        }, {
-          per_page: 1,
-          expect: 1
-        }, {
-          per_page: 99,
-          expect: 99
-        },
-      ] as any
-
-      const params = new SearchParams()
-      expect(params.per_page).toBe(15)
-
-      arrange.forEach((item) => {
-        const {per_page} = item
-        const params = new SearchParams({per_page})
-        expect(params.per_page).toBe(item.expect)
-      })
-    })
-
-    test('sort props', () => {
-      const params = new SearchParams()
-      expect(params.sort).toBeNull()
+describe("Search Unit Tests", () => {
+  describe("SearchParams Unit Tests", () => {
+    //TODO refactor to test.each
+    test("page prop", () => {
+      const params = new SearchParams();
+      expect(params.page).toBe(1);
 
       const arrange = [
-        {
-          sort: '',
-          expect: null
-        },
-        {
-          sort: null,
-          expect: null
-        },
-        {
-          sort: undefined,
-          expect: null
-        },
-        {
-          sort: true,
-          expect: 'true'
-        }, {
-          sort: false,
-          expect: 'false'
-        }, {
-          sort: 'fake',
-          expect: 'fake'
-        }, {
-          sort: 3,
-          expect: '3'
-        }, {
-          sort: -1,
-          expect: '-1'
-        }, {
-          sort: 1,
-          expect: '1'
-        }, {
-          sort: {},
-          expect: '[object Object]'
-        },
-      ] as any
+        { page: null, expected: 1 },
+        { page: undefined, expected: 1 },
+        { page: "", expected: 1 },
+        { page: "fake", expected: 1 },
+        { page: 0, expected: 1 },
+        { page: -1, expected: 1 },
+        { page: 5.5, expected: 1 },
+        { page: true, expected: 1 },
+        { page: false, expected: 1 },
+        { page: {}, expected: 1 },
 
-      arrange.forEach((item) => {
-        const {sort} = item
-        const params = new SearchParams({sort})
-        expect(params.sort).toBe(item.expect)
-      })
-    })
+        { page: 1, expected: 1 },
+        { page: 2, expected: 2 },
+      ];
 
-    test('sort dir props', () => {
-      const params = new SearchParams()
-      expect(params.sort_dir).toBeNull()
+      arrange.forEach((i) => {
+        expect(new SearchParams({ page: i.page as any }).page).toBe(i.expected);
+      });
+    });
 
+    test("per_page prop", () => {
+      const params = new SearchParams();
+      expect(params.per_page).toBe(15);
+
+      //TODO refactor to test.each
       const arrange = [
-        {
-          sort: '',
-          expect: null
-        },
-        {
-          sort: null,
-          expect: null
-        },
-        {
-          sort: undefined,
-          expect: null
-        },
-        {
-          sort: 'field',
-          expect: 'asc'
-        }, {
-          sort: true,
-          expect: 'asc'
-        }, {
-          sort: false,
-          expect: 'asc'
-        }, {
-          sort: {},
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: null,
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: undefined,
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: '',
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: {},
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: [],
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: 'asc',
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: 'desc',
-          expect: 'desc'
-        }, {
-          sort: 'field',
-          sort_dir: 'faker',
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: 'FAKER',
-          expect: 'asc'
-        }, {
-          sort: 'field',
-          sort_dir: 'DESC',
-          expect: 'desc'
-        },
-      ] as any
+        { per_page: null, expected: 15 },
+        { per_page: undefined, expected: 15 },
+        { per_page: "", expected: 15 },
+        { per_page: "fake", expected: 15 },
+        { per_page: 0, expected: 15 },
+        { per_page: -1, expected: 15 },
+        { per_page: 5.5, expected: 15 },
+        { per_page: true, expected: 15 },
+        { per_page: false, expected: 15 },
+        { per_page: {}, expected: 15 },
 
-      arrange.forEach(item => {
-        const params = new SearchParams(item)
-        expect(params.sort_dir).toBe(item.expect)
-      })
-    })
+        { per_page: 1, expected: 1 },
+        { per_page: 2, expected: 2 },
+        { per_page: 10, expected: 10 },
+      ];
 
-    test('filter props', () => {
+      arrange.forEach((i) => {
+        expect(new SearchParams({ per_page: i.per_page as any }).per_page).toBe(
+          i.expected
+        );
+      });
+    });
+
+    test("sort prop", () => {
+      const params = new SearchParams();
+      expect(params.sort).toBeNull();
+
+      //TODO refactor to test.each
       const arrange = [
-        {
-          filter: '',
-          expect: null
-        },
-        {
-          filter: null,
-          expect: null
-        },
-        {
-          filter: undefined,
-          expect: null
-        },
-        {
-          filter: true,
-          expect: 'true'
-        }, {
-          filter: false,
-          expect: 'false'
-        }, {
-          filter: 'fake',
-          expect: 'fake'
-        }, {
-          filter: 3.15,
-          expect: '3.15'
-        }, {
-          filter: -1,
-          expect: '-1'
-        }, {
-          filter: 1,
-          expect: '1'
-        }, {
-          filter: 99,
-          expect: '99'
-        },
-      ] as any
+        { sort: null, expected: null },
+        { sort: undefined, expected: null },
+        { sort: "", expected: null },
+        { sort: 0, expected: "0" },
+        { sort: -1, expected: "-1" },
+        { sort: 5.5, expected: "5.5" },
+        { sort: true, expected: "true" },
+        { sort: false, expected: "false" },
+        { sort: {}, expected: "[object Object]" },
+        { sort: "field", expected: "field" },
+      ];
 
-      const params = new SearchParams()
-      expect(params.filter).toBeNull()
+      arrange.forEach((i) => {
+        expect(new SearchParams({ sort: i.sort as any }).sort).toBe(i.expected);
+      });
+    });
 
-      arrange.forEach((item) => {
-        const {filter} = item
-        const params = new SearchParams({filter})
-        expect(params.filter).toBe(item.expect)
-      })
-    })
-  })
+    test("sort_dir prop", () => {
+      let params = new SearchParams();
+      expect(params.sort_dir).toBeNull();
 
-  describe('SearchResult Unit tests', () => {
-    test('constructor props', () => {
+      params = new SearchParams({ sort: null });
+      expect(params.sort_dir).toBeNull();
+
+      params = new SearchParams({ sort: undefined });
+      expect(params.sort_dir).toBeNull();
+
+      params = new SearchParams({ sort: "" });
+      expect(params.sort_dir).toBeNull();
+
+      //TODO refactor to test.each
+      const arrange = [
+        { sort_dir: null, expected: "asc" },
+        { sort_dir: undefined, expected: "asc" },
+        { sort_dir: "", expected: "asc" },
+        { sort_dir: 0, expected: "asc" },
+        { sort_dir: "fake", expected: "asc" },
+
+        { sort_dir: "asc", expected: "asc" },
+        { sort_dir: "ASC", expected: "asc" },
+        { sort_dir: "desc", expected: "desc" },
+        { sort_dir: "DESC", expected: "desc" },
+      ];
+
+      arrange.forEach((i) => {
+        expect(
+          new SearchParams({ sort: "field", sort_dir: i.sort_dir as any })
+            .sort_dir
+        ).toBe(i.expected);
+      });
+    });
+
+    test("filter prop", () => {
+      const params = new SearchParams();
+      expect(params.filter).toBeNull();
+
+      //TODO refactor to test.each
+      const arrange = [
+        { filter: null, expected: null },
+        { filter: undefined, expected: null },
+        { filter: "", expected: null },
+
+        { filter: 0, expected: "0" },
+        { filter: -1, expected: "-1" },
+        { filter: 5.5, expected: "5.5" },
+        { filter: true, expected: "true" },
+        { filter: false, expected: "false" },
+        { filter: {}, expected: "[object Object]" },
+        { filter: "field", expected: "field" },
+      ];
+
+      arrange.forEach((i) => {
+        expect(new SearchParams({ filter: i.filter as any }).filter).toBe(
+          i.expected
+        );
+      });
+    });
+  });
+
+  describe("SearchResult Unit Tests", () => {
+    test("constructor props", () => {
       let result = new SearchResult({
-        items: ['entity1', 'entity2'] as any,
+        items: ["entity1", "entity2"] as any,
         total: 4,
         current_page: 1,
         per_page: 2,
         sort: null,
         sort_dir: null,
-        filter: null
-      })
+        filter: null,
+      });
 
       expect(result.toJSON()).toStrictEqual({
-        items: ['entity1', 'entity2'] as any,
+        items: ["entity1", "entity2"] as any,
         total: 4,
         current_page: 1,
         per_page: 2,
         last_page: 2,
         sort: null,
         sort_dir: null,
-        filter: null
-      })
+        filter: null,
+      });
 
       result = new SearchResult({
-        items: ['entity1', 'entity2'] as any,
+        items: ["entity1", "entity2"] as any,
         total: 4,
         current_page: 1,
         per_page: 2,
-        sort: 'name',
-        sort_dir: 'asc',
-        filter: 'test'
-      })
+        sort: "name",
+        sort_dir: "asc",
+        filter: "test",
+      });
 
       expect(result.toJSON()).toStrictEqual({
-        items: ['entity1', 'entity2'] as any,
+        items: ["entity1", "entity2"] as any,
         total: 4,
         current_page: 1,
         per_page: 2,
         last_page: 2,
-        sort: 'name',
-        sort_dir: 'asc',
-        filter: 'test'
-      })
-    })
+        sort: "name",
+        sort_dir: "asc",
+        filter: "test",
+      });
+    });
 
-    it('should set last_page = 1  when per_page field is greater than total field', () => {
-      let result = new SearchResult({
+    it("should set last_page = 1 when per_page field is greater than total field", () => {
+      const result = new SearchResult({
         items: [] as any,
         total: 4,
         current_page: 1,
         per_page: 15,
-        sort: null,
-        sort_dir: null,
-        filter: null
-      })
-      expect(result.last_page).toBe(1)
-    })
+        sort: "name",
+        sort_dir: "asc",
+        filter: "test",
+      });
 
-    test('last page props when total is a not multiple of per_page', () => {
-      let result = new SearchResult({
+      expect(result.last_page).toBe(1);
+    });
+
+    test("last_page prop when total is not a multiple of per_page", () => {
+      const result = new SearchResult({
         items: [] as any,
         total: 101,
         current_page: 1,
         per_page: 20,
-        sort: null,
-        sort_dir: null,
-        filter: null
-      })
-      expect(result.last_page).toBe(6)
-    })
-  })
+        sort: "name",
+        sort_dir: "asc",
+        filter: "test",
+      });
+
+      expect(result.last_page).toBe(6);
+    });
+  });
 });

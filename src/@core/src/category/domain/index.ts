@@ -2,4 +2,4 @@
 
 export * from './entities';
 export * from './repository';
-export * from './validator';
+export * from './validators';
